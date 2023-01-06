@@ -3,6 +3,7 @@ const {validationError ,appError} = require("../utils/index");
 const {StatusCodes} = require("http-status-codes")
 class BookingRepository {
     async create(data){
+        console.log(data);
         try {
             const booking = await BookingInfo.create(data);
             return booking;    
