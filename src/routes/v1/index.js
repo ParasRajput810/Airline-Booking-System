@@ -6,6 +6,6 @@ const bookingcontroller = new bookingController();
 
 router.post("/createbooking" , bookingcontroller.create);
 
-router.get("/publish" , bookingcontroller.sendmessage);
+
 
 module.exports = router;

@@ -2,32 +2,18 @@ const BookingService = require("../service/bookingService");
 
 const bookingservice = new BookingService();
 
-const {createChannel , publishMsg} = require("../utils/messageQueue");
+const sendConfirmationMail = require("../utils/sendConfirmation");
 
-const {REMINDER_BINDING_KEY } = require("../config/serverConfig");
 
 class BookingController{
 
-    async sendmessage(req,res){
-        try {
-            const channel = await createChannel();
-            const msg = {message : "Success"};
-            publishMsg(channel , REMINDER_BINDING_KEY , JSON.stringify(msg));
-            return res.status(201).json({
-                err:{},
-                success:true,
-                message : "Queue created successfully"
-            })
-        } catch (error) {
-            console.log(error);
-        }
-        
-    }
-
    async create(req,res ){
-
+        console.log(req.body); 
         try {
             const booking = await bookingservice.create(req.body);
+            const data = {message : "Successfully created a ticket" , RecipientEmail : "pr8101999@gmail.com" , service : "Mail_service"};
+            console.log({...data , payload : req.body});
+            await sendConfirmationMail({...data , payload : req.body});
             return res.status(201).json({
                 data : booking,
                 err:{},
